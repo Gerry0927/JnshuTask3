@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gerry.jnshu.mapper.ImageInfoMapper">
+  <resultMap id="BaseResultMap2" type="com.gerry.jnshu.pojo.ImageInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="image_path" jdbcType="INTEGER" property="imagePath" />
+    <result column="relation_id" jdbcType="INTEGER" property="relationId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <insert id="insertImageUrls" parameterType="java.util.List">
+    insert into imageInfo (img_path,relation_id,type) values
+    <foreach collection="list" item="img" separator=",">
+      (#{img.imagePath},#{img.relationId},#{img.type})
+    </foreach>
+
+  </insert>
+</mapper>

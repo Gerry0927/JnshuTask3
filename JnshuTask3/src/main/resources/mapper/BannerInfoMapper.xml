@@ -10,14 +10,14 @@
     <result column="status" jdbcType="BIT" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <collection property="imgUrlInfo" ofType="java.lang.String" javaType="java.util.List">
+    <collection property="imgInfo" ofType="java.lang.String" javaType="java.util.List">
       <result column="img_path"/>
     </collection>
   </resultMap>
 
   <select id="queryAllBanners" resultMap="BaseResultMap">
     select
-    b.id,b.userId,b.status,b.create_time,b.update_time,m.img_path
+    b.id,b.user_id,b.status,b.create_time,b.update_time,m.img_path
     from banner b
     left join imageInfo m
     on b.id = m.relation_id

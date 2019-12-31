@@ -9,6 +9,7 @@ public class Comment {
      * 主键id
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**

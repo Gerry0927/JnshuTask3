@@ -1,15 +1,17 @@
 package com.gerry.jnshu.service;
 
+import com.gerry.jnshu.pojo.Article;
 import com.gerry.jnshu.pojo.BannerInfo;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
-public interface BannerService {
+public interface ArticleService {
 
-    List<BannerInfo> getBannerList();
-    Integer saveBannerInfo(BannerInfo bannerInfo);
+    PageInfo<Article> getArticleList(Integer pageNum, Integer pageSize);
+    Integer saveArticleInfo(Article article);
 
-    int updateBanneStatus(Integer bannerId,Integer status);
+    int updateArticle(Article article);
 
-    int deleteBannerInfo(Integer bannerId);
+    int deleteArticle(Integer articleId);
 }

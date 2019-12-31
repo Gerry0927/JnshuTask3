@@ -1,18 +1,16 @@
 package com.gerry.jnshu.service;
 
-import com.gerry.jnshu.pojo.CategoryInfo;
 import com.gerry.jnshu.pojo.Comment;
+import com.gerry.jnshu.pojo.Reply;
 import com.github.pagehelper.PageInfo;
 
-import java.util.List;
-
-public interface CommentService {
+public interface ReplyService {
 
 
-    PageInfo<Comment> getCommentList(Integer pageSize, Integer pageNum, Integer articleId);
+    PageInfo<Reply> getReplyList(Integer pageSize, Integer pageNum, Integer articleId);
 //    List<Comment> getCommentList(Integer pageSize, Integer pageNum, Integer articleId);
 
-    Integer saveCommentInfo(Comment comment);
+    Integer saveReplyInfo(Reply reply);
 
-    int deleteCommentInfo(Integer id);
+    int deleteReplyInfo(Integer id);
 }

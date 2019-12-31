@@ -13,5 +13,16 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    <collection property="imgUrlInfo" ofType="java.lang.String" javaType="java.util.List">
+      <result column="img_path"/>
+    </collection>
   </resultMap>
+
+  <select id="queryAllArticle" resultMap="BaseResultMap">
+    select
+    b.id,b.userId,b.status,b.create_time,b.update_time,m.img_path
+    from banner b
+    left join imageInfo m
+    on b.id = m.relation_id
+  </select>
 </mapper>

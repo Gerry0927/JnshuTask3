@@ -1,31 +1,32 @@
 package com.gerry.jnshu.controller;
 
 
-import com.gerry.jnshu.pojo.CategoryInfo;
 import com.gerry.jnshu.pojo.Comment;
 import com.gerry.jnshu.pojo.CommentDTO;
+import com.gerry.jnshu.pojo.Reply;
+import com.gerry.jnshu.pojo.ReplyDTO;
 import com.gerry.jnshu.response.Result;
 import com.gerry.jnshu.service.CommentService;
+import com.gerry.jnshu.service.ReplyService;
 import com.github.pagehelper.PageInfo;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-@RequestMapping("comment")
+@RequestMapping("reply")
 @RestController
-public class CommentController {
+public class ReplyController {
 
 
     @Resource
-    private CommentService commentService;
+    private ReplyService replyService;
 
-    @RequestMapping(value = "/{articleId}",method = RequestMethod.GET)
-    public Result<CommentDTO> getCommentList(@PathVariable  Integer articleId,@RequestParam(required = false,defaultValue = "1") Integer pageNum, @RequestParam(required = false,defaultValue = "10") Integer pageSize){
-        CommentDTO commentDTO = new CommentDTO();
+    @RequestMapping(value = "/{commentId}",method = RequestMethod.GET)
+    public Result<ReplyDTO> getCommentList(@PathVariable  Integer commentId,@RequestParam(required = false,defaultValue = "1") Integer pageNum, @RequestParam(required = false,defaultValue = "10") Integer pageSize){
+        ReplyDTO commentDTO = new ReplyDTO();
 
-        PageInfo<Comment> commentPageInfo = commentService.getCommentList(pageNum,pageSize,articleId);
+        PageInfo<Reply> commentPageInfo = replyService.getReplyList(pageNum,pageSize,commentId);
 
         commentDTO.setCurrentPage(commentPageInfo.getPageNum());
         commentDTO.setTotalPages(commentPageInfo.getPages());
@@ -36,7 +37,7 @@ public class CommentController {
 
     @RequestMapping(value = "/{id}",method = RequestMethod.DELETE)
     public Result<Integer> deleteBannerInfo(@PathVariable Integer id){
-        int rowIds = commentService.deleteCommentInfo(id);
+        int rowIds = replyService.deleteReplyInfo(id);
         if(rowIds<=0){
             return Result.success(null,"删除失败,记录不存在");
         }
@@ -45,8 +46,8 @@ public class CommentController {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public Result<Object> addCategory(@Valid Comment comment){
-        Integer categoryId = commentService.saveCommentInfo(comment);
+    public Result<Object> addCategory(@Valid Reply comment){
+        Integer categoryId = replyService.saveReplyInfo(comment);
         return Result.success(categoryId,"保存成功");
     }
 

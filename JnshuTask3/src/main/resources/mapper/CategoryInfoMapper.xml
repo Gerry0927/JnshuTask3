@@ -5,7 +5,33 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <result column="cat_id" jdbcType="INTEGER" property="catId" />
-    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    <id column="id" javaType="INTEGER" property="id"/>
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <collection property="seCategories" ofType="com.gerry.jnshu.pojo.CategoryInfo" javaType="java.util.List">
+      <id column="se_id" property="id"/>
+      <result column="se_category_name" property="categoryName"/>
+      <result column="se_parent_id" property="parentId"/>
+      <result column="se_create_time" property="createTime"/>
+      <result column="se_update_time" property="updateTime"/>
+    </collection>
+
   </resultMap>
+
+  <select id="queryAllCategory" resultMap="BaseResultMap">
+  select
+    c1.id,c1.category_name,c1.parent_id,
+    c2.id se_id,c2.category_name se_category_name,c2.parent_id c2_parent_id,c2.create_time se_create_time,c2.update_time se_update_time
+    from category c1
+    left join category c2 on c2.parent_id=c1.id;
+  </select>
+  <select id="queryCategoryById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  select
+    c1.id,c1.category_name,c1.parent_id,
+    c2.id se_id,c2.category_name se_category_name,c2.parent_id c2_parent_id,c2.create_time se_create_time,c2.update_time se_update_time
+    from category c1
+    left join category c2 on c2.parent_id=c1.id where c1.id=#{id};
+  </select>
 </mapper>

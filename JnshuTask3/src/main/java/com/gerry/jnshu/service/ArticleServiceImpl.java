@@ -11,6 +11,7 @@ import com.gerry.jnshu.pojo.Reply;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
@@ -61,7 +62,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public int deleteArticle(Integer id) {
         int rowIds= articleMapper.deleteByPrimaryKey(id);
         Example example = new Example(ImageInfo.class);

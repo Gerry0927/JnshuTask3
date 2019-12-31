@@ -1,44 +1,43 @@
 package com.gerry.jnshu.service;
 
 import com.gerry.jnshu.mapper.CommentMapper;
-import com.gerry.jnshu.pojo.Article;
+import com.gerry.jnshu.mapper.ReplyMapper;
 import com.gerry.jnshu.pojo.Comment;
-import com.github.pagehelper.ISelect;
+import com.gerry.jnshu.pojo.Reply;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CommentServiceImpl implements CommentService {
+public class ReplyServiceImpl implements ReplyService {
 
     @Resource
-    private CommentMapper commentMapper;
+    private ReplyMapper replyMapper;
     @Override
-    public PageInfo<Comment> getCommentList( Integer pageNum,Integer pageSize,Integer articleId) {
+    public PageInfo<Reply> getReplyList(Integer pageNum, Integer pageSize, Integer commentId) {
 
         PageHelper.startPage(pageNum, pageSize);
-        Example example = new Example(Comment.class);
+        Example example = new Example(Reply.class);
 
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("articleId",articleId);
-        List<Comment> studentList = commentMapper.selectByExample(example);
-        PageInfo<Comment> pageInfo = new PageInfo<Comment>(studentList);
+        criteria.andEqualTo("commentId",commentId);
+        List<Reply> replyList = replyMapper.selectByExample(example);
+        PageInfo<Reply> pageInfo = new PageInfo<Reply>(replyList);
         return pageInfo;
     }
 
     @Override
-    public Integer saveCommentInfo(Comment comment) {
-        Integer commentId = commentMapper.insertSelective(comment);
+    public Integer saveReplyInfo(Reply comment) {
+        Integer commentId = replyMapper.insertSelective(comment);
         return commentId;
     }
 
     @Override
-    public int deleteCommentInfo(Integer id) {
-        return commentMapper.deleteByPrimaryKey(id);
+    public int deleteReplyInfo(Integer id) {
+        return replyMapper.deleteByPrimaryKey(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.gerry.jnshu.pojo;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.*;
 
 @Table(name = "article")
@@ -9,6 +10,7 @@ public class Article {
      * 主键id
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -193,5 +195,26 @@ public class Article {
      */
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
+    }
+
+    @Transient
+    public List<String> imgUrlInfo;
+    @Transient
+    private String imgUrls;
+
+    public List<String> getImgUrlInfo() {
+        return imgUrlInfo;
+    }
+
+    public void setImgUrlInfo(List<String> imgUrlInfo) {
+        this.imgUrlInfo = imgUrlInfo;
+    }
+
+    public String getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(String imgUrls) {
+        this.imgUrls = imgUrls;
     }
 }

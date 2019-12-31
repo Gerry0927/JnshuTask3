@@ -3,14 +3,9 @@ package com.gerry.jnshu.log;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.gerry.jnshu.exception.GlobalExceptionHandler;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -20,7 +15,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,9 +41,16 @@ public class ControllerAspect {
 //        String methodName = joinPoint.getSignature().getName(); //切入的方法名
         Object[] params = joinPoint.getArgs(); //目标方法传入的参数
 //        logger.error("[Exception]:["+className+"]"+methodName+":" + ex.getMessage()+"[params]:"+param);
-        ControllerAspect.LogContent content = new ControllerAspect.LogContent( params, ex.getMessage() , uri, ip);
+
+        ControllerAspect.LogContent content = new ControllerAspect.LogContent( params, convertExceptionToString(ex) , uri, ip);
         logger.error(mapper.writeValueAsString(content));
 
+    }
+
+    public static String convertExceptionToString(Throwable e) {
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw, true));
+        return sw.toString();
     }
 
     private class LogContent implements Serializable {

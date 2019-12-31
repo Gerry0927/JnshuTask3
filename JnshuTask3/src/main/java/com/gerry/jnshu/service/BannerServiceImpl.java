@@ -4,7 +4,10 @@ import com.gerry.jnshu.mapper.BannerInfoMapper;
 import com.gerry.jnshu.mapper.ImageInfoMapper;
 import com.gerry.jnshu.pojo.BannerInfo;
 import com.gerry.jnshu.pojo.ImageInfo;
+import com.gerry.jnshu.pojo.Reply;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -29,7 +32,7 @@ public class BannerServiceImpl implements BannerService {
     public Integer saveBannerInfo(BannerInfo bannerInfo) {
         int bannerId = bannerMapper.insertSelective(bannerInfo);
         if(bannerId>0){
-            List<String> imgUrls = bannerInfo.getImgUrlInfo();
+            List<String> imgUrls = bannerInfo.getImgInfo();
             List<ImageInfo> imageInfos = new ArrayList<>();
             for (String url : imgUrls) {
                 ImageInfo imageInfo = new ImageInfo();
@@ -52,9 +55,15 @@ public class BannerServiceImpl implements BannerService {
         return rowIds;
     }
 
+
     @Override
+//    @Transactional
     public int deleteBannerInfo(Integer bannerId) {
         int rowIds = bannerMapper.deleteByPrimaryKey(bannerId);
+        Example example = new Example(ImageInfo.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("relationId",bannerId);
+        imageInfoMapper.deleteByExample(example);
         return rowIds;
     }
 }

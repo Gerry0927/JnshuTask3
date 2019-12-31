@@ -46,25 +46,18 @@ public class BannerInfo {
     }
 
     @Transient
-    public List<String> imgUrlInfo;
-    @Transient
-    private String imgUrls;
+    public List<String> imgInfo;
 
-    public List<String> getImgUrlInfo() {
-        return imgUrlInfo;
+
+
+    public List<String> getImgInfo() {
+        return imgInfo;
     }
 
-    public void setImgUrlInfo(List<String> imgUrlInfo) {
-        this.imgUrlInfo = imgUrlInfo;
+    public void setImgInfo(List<String> imgUrlInfo) {
+        this.imgInfo = imgUrlInfo;
     }
 
-    public String getImgUrls() {
-        return imgUrls;
-    }
-
-    public void setImgUrls(String imgUrls) {
-        this.imgUrls = imgUrls;
-    }
 
 
     /**

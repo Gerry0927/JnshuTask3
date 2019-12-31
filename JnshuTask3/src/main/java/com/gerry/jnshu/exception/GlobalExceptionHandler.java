@@ -15,6 +15,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
+
+import java.util.Set;
 
 import static com.gerry.jnshu.response.ResultCode.VALIDATE_FAILED;
 
@@ -73,7 +81,7 @@ public class GlobalExceptionHandler {
     /**
      * 405 - Method Not Allowed
      */
-    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+//    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Result<String> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         logger.error("不支持当前请求方法", e);
@@ -93,24 +101,33 @@ public class GlobalExceptionHandler {
     /**
      * ValidationException
      */
-//    @ExceptionHandler(ValidationException.class)
-//    public Result<String> handleValidationException(ValidationException e) {
-//        logger.error(e.getMessage(), e);
-//        StringBuilder errorMsg = new StringBuilder();
-//        if (e instanceof ConstraintViolationException) {
-//            ConstraintViolationException exs = (ConstraintViolationException) e;
-//
-//            Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
-//            for (ConstraintViolation<?> item : violations) {
-//                /**打印验证不通过的信息*/
-//                errorMsg.append(item.getMessage()).append("\n");
-//            }
-//
-//        }
-//        else{
-//           errorMsg = new StringBuilder(e.getMessage());
-//        }
-//        return Result.failed(VALIDATE_FAILED.getCode(), errorMsg.toString());
+    @ExceptionHandler(ValidationException.class)
+    public Result<String> handleValidationException(ValidationException e) {
+        logger.error(e.getMessage(), e);
+        StringBuilder errorMsg = new StringBuilder();
+        if (e instanceof ConstraintViolationException) {
+            ConstraintViolationException exs = (ConstraintViolationException) e;
+
+            Set<ConstraintViolation<?>> violations = exs.getConstraintViolations();
+            for (ConstraintViolation<?> item : violations) {
+                /**打印验证不通过的信息*/
+                errorMsg.append(item.getMessage()).append("\n");
+            }
+
+        }
+        else{
+           errorMsg = new StringBuilder(e.getMessage());
+        }
+        return Result.failed(VALIDATE_FAILED.getCode(), errorMsg.toString());
+    }
+
+    /**
+     * 404- No Found
+     */
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+//    public Result<String> handleException(HttpRequestMethodNotSupportedException e) {
+//        return Result.failed(VALIDATE_FAILED.getCode(),e.getMessage());
 //    }
 //
     /**
@@ -122,6 +139,7 @@ public class GlobalExceptionHandler {
         if (e instanceof CustomException) {
             return Result.failed(e.getMessage());
         }
+        e.printStackTrace();
         return Result.failed("server_error");
     }
 

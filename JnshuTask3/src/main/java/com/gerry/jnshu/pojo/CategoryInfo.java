@@ -1,40 +1,41 @@
 package com.gerry.jnshu.pojo;
 
+import lombok.*;
+import lombok.extern.apachecommons.CommonsLog;
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.List;
 
 @Table(name = "category")
+@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryInfo {
-    @Column(name = "cat_id")
-    private Integer catId;
 
-    @Column(name = "cat_name")
-    private String catName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    /**
-     * @return cat_id
-     */
-    public Integer getCatId() {
-        return catId;
-    }
+    @Column(name = "category_name")
+    private String categoryName;
 
-    /**
-     * @param catId
-     */
-    public void setCatId(Integer catId) {
-        this.catId = catId;
-    }
+    @Column(name = "parent_id")
+    private Integer parentId;
 
-    /**
-     * @return cat_name
-     */
-    public String getCatName() {
-        return catName;
-    }
+    @Column(name="create_time")
+    private String createTime;
 
-    /**
-     * @param catName
-     */
-    public void setCatName(String catName) {
-        this.catName = catName == null ? null : catName.trim();
-    }
+    @Column(name = "update_time")
+    private String updateTime;
+
+    @Transient
+    private List<CategoryInfo> seCategories;
+
+
+
 }
